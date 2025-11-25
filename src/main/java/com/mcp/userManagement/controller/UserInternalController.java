@@ -30,7 +30,7 @@ public class UserInternalController {
     private final UserService userService;
     private final RefreshTokenService refreshTokenService;
 
-    @GetMapping(ApiConstants.GET_USER_BY_USERNAME_ENDPOINT)
+    @PostMapping(ApiConstants.GET_USER_BY_USERNAME_ENDPOINT)
     public ResponseEntity<?> getUserByUsername(@RequestBody UsernameVo request) {
         String username = request.getUsername();
         if (ObjectUtils.isEmpty(username)) {
@@ -60,6 +60,4 @@ public class UserInternalController {
         return new ResponseEntity<>(CommonUtils.encodeUserVo(userVo), HttpStatus.OK);
 
     }
-
-
 }

@@ -5,10 +5,7 @@ import lombok.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "mcp_users_role",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"), @UniqueConstraint(columnNames = "email")
-        })
+@Table(name = "mcp_users_role")
 @Data
 @Builder(toBuilder = true)
 @NoArgsConstructor
@@ -23,6 +20,5 @@ public class Role extends BaseModel{
 
     @Column(name = "description")
     private String description;
-
 
 }

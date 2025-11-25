@@ -7,18 +7,21 @@ import com.mcp.userManagement.repository.RefreshTokenRepository;
 import com.mcp.userManagement.repository.UserRepository;
 import com.mcp.userManagement.service.RefreshTokenService;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@AllArgsConstructor
+@Service
+@RequiredArgsConstructor
 @Slf4j
 public class RefreshTokenImpl implements RefreshTokenService {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
-    private AppProperties appProperties;
+    private final AppProperties appProperties;
 
     @Override
     public RefreshToken createRefreshToken(Long userId) {

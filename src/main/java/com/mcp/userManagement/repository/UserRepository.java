@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<Users, Long> {
 
-    @Query("SELECT u FROM Users WHERE u.isDeleted = 0 AND u.username = :username")
+    @Query("SELECT u FROM Users u WHERE u.isDeleted = 0 AND u.username = :username")
     Optional<Users> findByUsername(@Param("username") String username);
 }

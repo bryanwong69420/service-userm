@@ -1,5 +1,6 @@
 package com.mcp.userManagement.controller;
 
+import com.mcp.userManagement.constants.ApiConstants;
 import com.mcp.userManagement.dto.request.RegisterUserDTO;
 import com.mcp.userManagement.dto.response.ApiDTO;
 import com.mcp.userManagement.model.Users;
@@ -7,12 +8,19 @@ import com.mcp.userManagement.repository.UserRepository;
 import com.mcp.userManagement.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@AllArgsConstructor
+@Slf4j
+@RestController
+@RequiredArgsConstructor
+@RequestMapping(ApiConstants.USER_BASE_URL)
 public class UserController {
     private final UserService userService;
 

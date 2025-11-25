@@ -41,10 +41,14 @@ public class Users extends BaseModel implements Serializable {
     @Size(max = 200)
     private String password;
 
-    @Column(name = "role")
-    private String role;
-
     @Column(name = "last_login_at")
     private LocalDateTime lastLoginAt;
+
+    @Builder.Default
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "mcp_users_role_map",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private Set<Role> roles = new HashSet<>();
 
 }

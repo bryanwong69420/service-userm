@@ -8,6 +8,8 @@ import com.mcp.userManagement.service.UserService;
 import com.mcp.userManagement.utils.SnowflakeIdGenerator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +20,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public Optional<UserVo> findByUsername(String username) {
         return userRepository.findByUsername(username)
@@ -39,7 +42,7 @@ public class UserServiceImpl implements UserService {
         Users users = Users.builder()
                 .id(SnowflakeIdGenerator.generateId())
                 .username(dto.getUsername())
-                .password(dto.getPassword())
+                .password(passwordEncoder.encode(dto.getPassword()))
                 .email("testingemail@gmail.com")
                 .build();
 
@@ -47,12 +50,11 @@ public class UserServiceImpl implements UserService {
     }
 
     private UserVo mapperUserVo(Users user) {
-        return UserVo.builder()
-                .id(user.getId())
-                .username(user.getUsername())
-                .email(user.getEmail())
-                .password(user.getPassword())
-                .build();
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.typeMap(Users.class, UserVo.class).addMappings(mapper -> {
+            mapper.map(Users::getRoles, UserVo::setRoles);
+        });
 
+        return modelMapper.map(user, UserVo.class);
     }
 }

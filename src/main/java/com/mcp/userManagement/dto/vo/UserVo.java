@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -17,7 +19,7 @@ public class UserVo implements Serializable {
     private String username;
     private String password;
     private String email;
-    private String role;
-    private LocalDateTime last_login_at;
+    private Set<RoleVo> roles = new HashSet<>();
+    private LocalDateTime lastLoginAt;
     private RefreshTokenVo refreshTokenVo;
 }
