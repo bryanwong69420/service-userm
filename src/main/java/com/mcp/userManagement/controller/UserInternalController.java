@@ -1,6 +1,7 @@
 package com.mcp.userManagement.controller;
 
 
+import com.mcp.userManagement.config.security.TokenProvider;
 import com.mcp.userManagement.constants.ApiConstants;
 import com.mcp.userManagement.dto.vo.RefreshTokenVo;
 import com.mcp.userManagement.dto.vo.UserVo;
@@ -10,6 +11,7 @@ import com.mcp.userManagement.model.Users;
 import com.mcp.userManagement.service.RefreshTokenService;
 import com.mcp.userManagement.service.UserService;
 import com.mcp.userManagement.utils.CommonUtils;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
@@ -56,8 +58,8 @@ public class UserInternalController {
         RefreshToken refreshToken = refreshTokenService.createRefreshToken(userVo.getId());
         ModelMapper modelMapper = new ModelMapper();
         userVo.setRefreshTokenVo(modelMapper.map(refreshToken, RefreshTokenVo.class));
-
-        return new ResponseEntity<>(CommonUtils.encodeUserVo(userVo), HttpStatus.OK);
+        String encodeContent = CommonUtils.encodeUserVo(userVo);
+        return new ResponseEntity<>(encodeContent, HttpStatus.OK);
 
     }
 }
