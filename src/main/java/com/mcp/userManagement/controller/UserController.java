@@ -35,4 +35,9 @@ public class UserController {
             return new ResponseEntity<>(new ApiDTO(false, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/test-access-token")
+    public ResponseEntity<?> testAuth() {
+        return new ResponseEntity<>(new ApiDTO(true, "Authorized"), HttpStatus.OK);
+    }
 }
