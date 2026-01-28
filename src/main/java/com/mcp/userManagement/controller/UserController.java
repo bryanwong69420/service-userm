@@ -23,19 +23,6 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/createUser")
-    public ResponseEntity<?> createUser(@Valid @RequestBody RegisterUserDTO dto) {
-        if (!dto.getPassword().equals(dto.getMatchingPassword())) {
-            return new ResponseEntity<>(new ApiDTO(false, "Non Matching Password"), HttpStatus.BAD_REQUEST);
-        }
-        try {
-            userService.createUser(dto);
-            return new ResponseEntity<>(new ApiDTO(true, "User Created Successfully"), HttpStatus.OK);
-        } catch (RuntimeException e) {
-            return new ResponseEntity<>(new ApiDTO(false, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @GetMapping("/test-access-token")
     public ResponseEntity<?> testAuth() {
         return new ResponseEntity<>(new ApiDTO(true, "Authorized"), HttpStatus.OK);

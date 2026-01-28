@@ -1,8 +1,12 @@
 package com.mcp.userManagement.service.impl;
 
 import com.mcp.userManagement.dto.request.RegisterUserDTO;
+import com.mcp.userManagement.dto.vo.SignUpRequestVo;
 import com.mcp.userManagement.dto.vo.UserVo;
+import com.mcp.userManagement.enums.ERole;
+import com.mcp.userManagement.model.Role;
 import com.mcp.userManagement.model.Users;
+import com.mcp.userManagement.repository.RoleRepository;
 import com.mcp.userManagement.repository.UserRepository;
 import com.mcp.userManagement.service.UserService;
 import com.mcp.userManagement.utils.SnowflakeIdGenerator;
@@ -12,7 +16,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -21,6 +29,8 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoleRepository roleRepository;
+
     @Override
     public Optional<UserVo> findByUsername(String username) {
         return userRepository.findByUsername(username)
@@ -38,15 +48,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(RegisterUserDTO dto) {
-        Users users = Users.builder()
-                .id(SnowflakeIdGenerator.generateId())
-                .username(dto.getUsername())
-                .password(passwordEncoder.encode(dto.getPassword()))
-                .email("testingemail@gmail.com")
-                .build();
-
-        userRepository.save(users);
+    public boolean signUp(SignUpRequestVo dto) {
+        try {
+            Optional<Role> userRole = roleRepository.findByName(ERole.ROLE_USER.getKey());
+            Set<Role> roleSet = userRole.map(Set::of).orElse(Collections.emptySet());
+            Users users = Users.builder()
+                    .id(SnowflakeIdGenerator.generateId())
+                    .username(dto.getUsername())
+                    .password(passwordEncoder.encode(dto.getPassword()))
+                    .email("testingemail@gmail.com")
+                    .roles(roleSet)
+                    .build();
+            userRepository.save(users);
+            log.info("User Sign Up Success!");
+            return true;
+        } catch (Exception e) {
+            log.error("User Sign Up Failed: {}", e.getMessage());
+            return false;
+        }
     }
 
     private UserVo mapperUserVo(Users user) {

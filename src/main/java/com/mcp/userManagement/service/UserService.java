@@ -1,6 +1,7 @@
 package com.mcp.userManagement.service;
 
 import com.mcp.userManagement.dto.request.RegisterUserDTO;
+import com.mcp.userManagement.dto.vo.SignUpRequestVo;
 import com.mcp.userManagement.dto.vo.UserVo;
 import com.mcp.userManagement.model.Users;
 
@@ -13,5 +14,6 @@ public interface UserService {
 
     void save(Users user);
 
-    void createUser(RegisterUserDTO dto);
+    boolean signUp(SignUpRequestVo vo);
+
 }

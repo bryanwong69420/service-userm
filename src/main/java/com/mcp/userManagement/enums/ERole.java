@@ -4,8 +4,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum ERole {
-    ROLE_USER("ROLE_USER", "USER"),
-    ROLE_ADMIN("ROLE_ADMIN", "ADMIN");
+    ROLE_USER("ROLE_USER", "User Role"),
+    ROLE_ADMIN("ROLE_ADMIN", "Admin Role");
 
     private final String key;
     private final String desc;

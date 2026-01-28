@@ -20,6 +20,7 @@
 
 package com.mcp.userManagement.exception;
 
+import com.mcp.userManagement.dto.response.ApiDTO;
 import jakarta.persistence.PersistenceException;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -37,36 +38,17 @@ import java.util.Map;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneralException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred: " + ex.getMessage());
+    public ResponseEntity<ApiDTO> handleGeneralException(Exception ex) {
+        return new ResponseEntity<>(new ApiDTO(false, ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, Object>> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, Object> response = new HashMap<>();
-        Map<String, String> errors = new HashMap<>();
-
-        for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.put(error.getField(), error.getDefaultMessage());
-        }
-
-        response.put("success", false);
-        response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("message", errors);
-
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
-    }
-
 
     @ExceptionHandler({
             IllegalArgumentException.class,
             NullPointerException.class,
             IllegalStateException.class
     })
-    public ResponseEntity<String> handleBadRequestExceptions(Exception ex) {
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body("Invalid request data: " + ex.getMessage());
+    public ResponseEntity<ApiDTO> handleBadRequestExceptions(Exception ex) {
+        return new ResponseEntity<>(new ApiDTO(false, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({
@@ -74,9 +56,7 @@ public class GlobalExceptionHandler {
             PersistenceException.class,
             SQLException.class
     })
-    public ResponseEntity<String> handleDatabaseErrors(Exception ex) {
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Database operation failed");
+    public ResponseEntity<ApiDTO> handleDatabaseErrors(Exception ex) {
+        return new ResponseEntity<>(new ApiDTO(false, "Unexpected error occured!"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

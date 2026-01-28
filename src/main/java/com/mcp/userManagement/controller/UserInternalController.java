@@ -65,7 +65,12 @@ public class UserInternalController {
 
     @PostMapping(ApiConstants.INTERNAL_SIGN_UP_ENDPOINT)
     public ResponseEntity<?> internalSignUp(@RequestBody SignUpRequestVo signUpRequestVo) {
-        return ResponseEntity.ok()
+        boolean signedIn = userService.signUp(signUpRequestVo);
+        if (signedIn) {
+            return ResponseEntity.ok("ok");
+        } else {
+            return ResponseEntity.badRequest().body("User sign up failed!");
+        }
     }
 
 }
