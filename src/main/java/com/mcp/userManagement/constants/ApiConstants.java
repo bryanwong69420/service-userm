@@ -4,6 +4,7 @@ public class ApiConstants {
     public static final String USER_BASE_URL = "/users";
     public static final String INTERNAL_BASE_URL = "/internal";
     public static final String GET_USER_BY_USERNAME_ENDPOINT = "/getUserByUsername";
+    public static final String INTERNAL_SIGN_UP_ENDPOINT = "/signUp";
 
     public static final String INTERNAL_REFRESH_TOKEN_ENDPOINT = "/refresh";
 }

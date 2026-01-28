@@ -4,6 +4,7 @@ package com.mcp.userManagement.controller;
 import com.mcp.userManagement.config.security.TokenProvider;
 import com.mcp.userManagement.constants.ApiConstants;
 import com.mcp.userManagement.dto.vo.RefreshTokenVo;
+import com.mcp.userManagement.dto.vo.SignUpRequestVo;
 import com.mcp.userManagement.dto.vo.UserVo;
 import com.mcp.userManagement.dto.vo.UsernameVo;
 import com.mcp.userManagement.model.RefreshToken;
@@ -60,6 +61,11 @@ public class UserInternalController {
         userVo.setRefreshTokenVo(modelMapper.map(refreshToken, RefreshTokenVo.class));
         String encodeContent = CommonUtils.encodeUserVo(userVo);
         return new ResponseEntity<>(encodeContent, HttpStatus.OK);
-
     }
+
+    @PostMapping(ApiConstants.INTERNAL_SIGN_UP_ENDPOINT)
+    public ResponseEntity<?> internalSignUp(@RequestBody SignUpRequestVo signUpRequestVo) {
+        return ResponseEntity.ok()
+    }
+
 }
