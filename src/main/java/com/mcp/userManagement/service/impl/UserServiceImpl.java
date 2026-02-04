@@ -56,7 +56,7 @@ public class UserServiceImpl implements UserService {
                     .id(SnowflakeIdGenerator.generateId())
                     .username(dto.getUsername())
                     .password(passwordEncoder.encode(dto.getPassword()))
-                    .email("testingemail@gmail.com")
+                    .email(dto.getEmail())
                     .roles(roleSet)
                     .build();
             userRepository.save(users);
