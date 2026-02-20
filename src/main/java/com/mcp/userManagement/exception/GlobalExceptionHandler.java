@@ -22,24 +22,25 @@ package com.mcp.userManagement.exception;
 
 import com.mcp.userManagement.dto.response.ApiDTO;
 import jakarta.persistence.PersistenceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiDTO> handleGeneralException(Exception ex) {
-        return new ResponseEntity<>(new ApiDTO(false, ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error(ex.getMessage());
+        return new ResponseEntity<>(new ApiDTO(false, "Unexpected Error Occurred!"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler({
@@ -48,6 +49,7 @@ public class GlobalExceptionHandler {
             IllegalStateException.class
     })
     public ResponseEntity<ApiDTO> handleBadRequestExceptions(Exception ex) {
+        log.error(ex.getMessage());
         return new ResponseEntity<>(new ApiDTO(false, ex.getMessage()), HttpStatus.BAD_REQUEST);
     }
 
@@ -57,6 +59,7 @@ public class GlobalExceptionHandler {
             SQLException.class
     })
     public ResponseEntity<ApiDTO> handleDatabaseErrors(Exception ex) {
-        return new ResponseEntity<>(new ApiDTO(false, "Unexpected error occured!"), HttpStatus.INTERNAL_SERVER_ERROR);
+        log.error(ex.getMessage());
+        return new ResponseEntity<>(new ApiDTO(false, "Database error occurred!"), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
