@@ -16,4 +16,6 @@ public interface UserService {
 
     boolean signUp(SignUpRequestVo vo);
 
+    UserVo mapperVo(Users user);
+
 }

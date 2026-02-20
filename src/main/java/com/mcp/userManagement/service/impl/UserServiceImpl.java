@@ -68,6 +68,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public UserVo mapperVo(Users user) {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(user, UserVo.class);
+    }
+
     private UserVo mapperUserVo(Users user) {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.typeMap(Users.class, UserVo.class).addMappings(mapper -> {

@@ -7,6 +7,7 @@ import com.mcp.userManagement.dto.vo.RefreshTokenVo;
 import com.mcp.userManagement.dto.vo.SignUpRequestVo;
 import com.mcp.userManagement.dto.vo.UserVo;
 import com.mcp.userManagement.dto.vo.UsernameVo;
+import com.mcp.userManagement.exception.TokenRefreshException;
 import com.mcp.userManagement.model.RefreshToken;
 import com.mcp.userManagement.model.Users;
 import com.mcp.userManagement.service.RefreshTokenService;
@@ -71,6 +72,24 @@ public class UserInternalController {
         } else {
             return ResponseEntity.badRequest().body("User sign up failed!");
         }
+    }
+
+    @PostMapping(ApiConstants.INTERNAL_REFRESH_TOKEN_ENDPOINT)
+    public ResponseEntity<?> refreshToken(@RequestBody RefreshTokenVo request) {
+        String requestRefreshToken = request.getRefreshToken();
+        if (ObjectUtils.isEmpty(requestRefreshToken)) {
+            return ResponseEntity.badRequest().body("Refresh token cannot be empty!");
+        }
+
+        Optional<UserVo> user =  refreshTokenService.findByRefreshToken(requestRefreshToken)
+                .map(refreshTokenService::verifyExpiration)
+                .map(RefreshToken::getUser)
+                .map(userService::mapperVo);
+
+        if(user.isEmpty()) {
+            return ResponseEntity.badRequest().body("Refresh token is not in database!");
+        }
+        return ResponseEntity.ok(user.get());
     }
 
 }
