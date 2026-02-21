@@ -13,7 +13,7 @@ ENV TZ=${TZ}
 WORKDIR /app
 
 # Copy JAR file
-COPY build/libs/usermService-${VERSION}.jar /app/app.jar
+COPY build/libs/service-userm-${VERSION}.jar /app/app.jar
 
 # Generate the class list
 RUN java -Xshare:off -XX:DumpLoadedClassList=classes.lst -jar app.jar --spring.main.lazy-initialization=true || true
