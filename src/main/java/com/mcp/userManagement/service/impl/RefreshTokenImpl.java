@@ -6,10 +6,10 @@ import com.mcp.userManagement.model.Users;
 import com.mcp.userManagement.repository.RefreshTokenRepository;
 import com.mcp.userManagement.repository.UserRepository;
 import com.mcp.userManagement.service.RefreshTokenService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -25,6 +25,7 @@ public class RefreshTokenImpl implements RefreshTokenService {
     private final AppProperties appProperties;
 
     @Override
+    @Transactional
     public RefreshToken createRefreshToken(Long userId) {
         Users user = userRepository.findById(userId)
                 .orElseThrow(() ->  new RuntimeException("No User Found with ID: " + userId));
@@ -37,6 +38,7 @@ public class RefreshTokenImpl implements RefreshTokenService {
     }
 
     @Override
+    @Transactional
     public RefreshToken verifyExpiration(RefreshToken token) {
         // Check if the token expiration date is before the current time
         if (token.getExpDate().isBefore(LocalDateTime.now())) {
@@ -47,6 +49,7 @@ public class RefreshTokenImpl implements RefreshTokenService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<RefreshToken> findByRefreshToken(String token) {
         return refreshTokenRepository.findByRefreshToken(token);
     }

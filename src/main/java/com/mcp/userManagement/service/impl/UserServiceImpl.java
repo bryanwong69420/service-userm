@@ -1,6 +1,5 @@
 package com.mcp.userManagement.service.impl;
 
-import com.mcp.userManagement.dto.request.RegisterUserDTO;
 import com.mcp.userManagement.dto.vo.SignUpRequestVo;
 import com.mcp.userManagement.dto.vo.UserVo;
 import com.mcp.userManagement.enums.ERole;
@@ -15,12 +14,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -32,22 +30,26 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<UserVo> findByUsername(String username) {
         return userRepository.findByUsername(username)
                 .map(this::mapperUserVo);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Users> findById(Long id) {
         return userRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public void save(Users user) {
         userRepository.save(user);
     }
 
     @Override
+    @Transactional
     public boolean signUp(SignUpRequestVo dto) {
         try {
             Optional<Role> userRole = roleRepository.findByName(ERole.ROLE_USER.getKey());
