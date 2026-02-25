@@ -9,4 +9,7 @@ public class RedisDbKeys {
     public static String getRedisCacheTokenKey(String token) {
         return MessageFormat.format(RedisKeyConstants.AUTH_SERVICE_MODULE_TOKEN, token);
     }
+    public static String getRedisCacheUserLastActivityKey(String username) {
+        return MessageFormat.format(RedisKeyConstants.AUTH_SERVICE_MODULE_LAST_ACTIVITY, username);
+    }
 }
