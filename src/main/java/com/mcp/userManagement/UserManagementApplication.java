@@ -7,14 +7,16 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.ComponentScan;
 
+import java.util.TimeZone;
+
 @SpringBootApplication
 @EnableFeignClients
 @EnableDiscoveryClient
 @ComponentScan(basePackages = {"com.mcp.*", "com.redis.*", "com.kafka.*"})
 @Slf4j
 public class UserManagementApplication {
-
 	public static void main(String[] args) {
+        log.info("Userm Service Timezone: {}", TimeZone.getDefault().getID());
 		SpringApplication.run(UserManagementApplication.class, args);
 	}
 
