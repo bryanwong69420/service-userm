@@ -4,7 +4,7 @@ FROM eclipse-temurin:17-jdk AS builder
 # Get build arguments
 ARG TZ
 ARG VERSION
-ARG SERVICE_NAME=usermService
+ARG SERVICE_NAME=service-userm
 
 # Set timezone
 ENV TZ=${TZ}
@@ -29,7 +29,7 @@ WORKDIR /app
 # Get build arguments
 ARG TZ
 ARG VERSION
-ARG SERVICE_NAME=usermService
+ARG SERVICE_NAME=service-userm
 
 # Set timezone
 ENV TZ=${TZ}
