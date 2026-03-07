@@ -16,7 +16,7 @@ import java.util.TimeZone;
 @Slf4j
 public class UserManagementApplication {
 	public static void main(String[] args) {
-        log.info("Userm Service Timezone: {}", TimeZone.getDefault().getID());
+        log.info("{} Timezone: {}", UserManagementApplication.class.getSimpleName(), TimeZone.getDefault().getID());
 		SpringApplication.run(UserManagementApplication.class, args);
 	}
 
